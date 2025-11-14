@@ -2,9 +2,10 @@
 const forms = require('@tailwindcss/forms');
 const typography = require('@tailwindcss/typography');
 const aspectRatio = require('@tailwindcss/aspect-ratio');
-const tailwindcssWebFont = require('tailwindcss-webfont-awesome');
+
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: 'class', // Enable dark mode with class strategy
   theme: {
     extend: {
       colors: {
@@ -18,12 +19,19 @@ module.exports = {
         gradientTo: "#4263EB",
       },
       fontFamily: {
-        sans: ["Geist", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
         grifter: ["Grifter", "sans-serif"],
         aeonik: ["Aeonik", "sans-serif"],
         gilroy: ["Gilroy", "sans-serif"],
+      },
+      borderRadius: {
+        'apple-sm': '10px',   // Small elements (buttons, inputs)
+        'apple': '12px',      // Default (cards, containers)
+        'apple-lg': '16px',   // Large cards
+        'apple-xl': '20px',   // Extra large containers
+        'apple-2xl': '24px',  // Hero sections
       }
     },
   },
-  plugins: [forms, typography, aspectRatio, tailwindcssWebFont],
+  plugins: [forms, typography, aspectRatio],
 };

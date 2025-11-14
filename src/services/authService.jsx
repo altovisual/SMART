@@ -1,7 +1,17 @@
 import { supabase } from "../supabaseClient";
+import * as mockAuth from "./mockAuthService";
+
+// 🎭 MOCK MODE: Set to true to bypass Supabase authentication
+const USE_MOCK_AUTH = true; // Change to false to use real Supabase
 
 // Login function
 export const loginUser = async (email, password, role) => {
+  // Use mock authentication if enabled
+  if (USE_MOCK_AUTH) {
+    console.warn('⚠️ MOCK MODE ACTIVE: Using mock authentication (no Supabase)');
+    return await mockAuth.loginUser(email, password, role);
+  }
+  
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -25,7 +35,13 @@ export const loginUser = async (email, password, role) => {
     }
 
     // Check if the user's email is confirmed
-    if (user && user.email_confirmed_at) {
+    // DEV MODE: Skip email verification for testing
+    const SKIP_EMAIL_VERIFICATION = true; // Set to false in production
+    
+    if (user && (user.email_confirmed_at || SKIP_EMAIL_VERIFICATION)) {
+      if (!user.email_confirmed_at) {
+        console.warn("⚠️ DEV MODE: Logging in without email verification");
+      }
       return user;
     } else {
       console.log("Email not confirmed. Please verify your email.");
@@ -41,6 +57,12 @@ export const loginUser = async (email, password, role) => {
 
 // Signup function
 export const signupUser = async (email, username, role, password) => {
+  // Use mock authentication if enabled
+  if (USE_MOCK_AUTH) {
+    console.warn('⚠️ MOCK MODE ACTIVE: Using mock authentication (no Supabase)');
+    return await mockAuth.signupUser(email, username, role, password);
+  }
+  
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -87,7 +109,18 @@ export const signupUser = async (email, username, role, password) => {
     return null;
   } catch (error) {
     console.error("Signup error:", error.message);
-    alert("Error during signup. Please try again.");
+    
+    // Handle specific error cases
+    if (error.message.includes("rate limit")) {
+      alert("Too many signup attempts. Please wait a few minutes before trying again.");
+    } else if (error.message.includes("Anonymous sign-ins are disabled")) {
+      alert("Anonymous sign-ins are not allowed. Please provide valid credentials.");
+    } else if (error.message.includes("User already registered")) {
+      alert("This email is already registered. Please try logging in instead.");
+    } else {
+      alert("Error during signup. Please try again.");
+    }
+    
     throw error;
   }
 };

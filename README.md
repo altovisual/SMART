@@ -98,9 +98,12 @@ Then serve the `build/` folder with any static host (Netlify, Vercel, GitHub Pag
 
 ## Common troubleshooting
 
-- If the dev server doesn't start, check for port conflicts on 3000 and environment variables that may block startup.
-- If Supabase errors appear, verify the keys in `.env.local` and restart the dev server.
-- If tailwind styles don't apply, ensure PostCSS/Tailwind is configured and `index.css` imports `@tailwind base; @tailwind components; @tailwind utilities;`.
+- **Dev server doesn't start**: Check for port conflicts on 3000 and environment variables that may block startup.
+- **Supabase errors**: Verify the keys in `.env.local` and restart the dev server.
+- **Tailwind styles don't apply**: Ensure PostCSS/Tailwind is configured and `index.css` imports `@tailwind base; @tailwind components; @tailwind utilities;`.
+- **Rate limit errors (429)**: Supabase has rate limits on signup/login attempts. Wait a few minutes before retrying. Consider implementing a delay or captcha for production.
+- **Anonymous sign-ins disabled**: This is a Supabase configuration. Check your Supabase project settings under Authentication > Providers.
+- **React Router warnings**: The app now uses React Router v7 future flags to prepare for the next major version.
 
 ## Contributing
 

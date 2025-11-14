@@ -14,8 +14,13 @@ export const login = (email, password, role) => async (dispatch) => {
         payload: response, // Example: user info returned from API
       });
       dispatch(setStatus("success"));
+    } else {
+      // Email not confirmed case
+      dispatch(setStatus("error"));
+      console.error("Login failed: Email not confirmed");
     }
   } catch (error) {
+    console.error("Login error:", error.message);
     dispatch(setStatus("error"));
   }
 };
@@ -35,6 +40,7 @@ export const signup = (email, username, role, password) => async (dispatch) => {
       dispatch(setStatus("success"));
     }
   } catch (error) {
+    console.error("Signup error:", error.message);
     dispatch(setStatus("error"));
   }
 };

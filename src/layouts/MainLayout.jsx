@@ -1,16 +1,21 @@
-import UserNavbar from "../components/common/NavBar/UserNavBar";
-import MerchantNavbar from "../components/common/NavBar/MerchantNavbar";
+import AppleNavBar from "../components/common/NavBar/AppleNavBar";
+import AnimatedBackground from "../components/common/AnimatedBackground";
+import { useTheme } from "../contexts/ThemeContext";
 
-export default function MainLayout({ children, role = "user" }) {
+export default function MainLayout({ children }) {
+  const { isDark } = useTheme();
+  
   return (
-    <div className="flex flex-col h-screen">
-      {/* Navbar takes 10% height */}
-      <div className="basis-[10%] flex-shrink-0">
-        {role === "user" ? <UserNavbar /> : <MerchantNavbar />}
-      </div>
-
-      {/* Main content takes 90% height */}
-      <main className="basis-[90%] overflow-auto">{children}</main>
+    <div className={`
+      min-h-screen relative
+      ${isDark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}
+      transition-colors duration-300
+    `}>
+      <AnimatedBackground />
+      <AppleNavBar />
+      <main className="scrollbar-ios relative z-10">
+        {children}
+      </main>
     </div>
   );
 }

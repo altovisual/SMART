@@ -30,18 +30,18 @@ export default function PurchaseHistory({ data = [] }) {
       }),
       merchant: (
         <span className="text-white font-aeonik whitespace-nowrap">
-          {his.merchant_name}
+          {his.merchant_name || 'Unknown'}
         </span>
       ),
-      item: <span className="text-white/80 whitespace-nowrap">{his.item}</span>,
+      item: <span className="text-white/80 whitespace-nowrap">{his.item || 'N/A'}</span>,
       amount_paid: (
         <span className="text-white whitespace-nowrap">
-          ${his.amount_paid.toFixed(2)}
+          ${(his.amount_paid || 0).toFixed(2)}
         </span>
       ),
       payment_method: (
         <span className="text-white whitespace-nowrap">
-          {his.payment_method}
+          {his.payment_method || 'Unknown'}
         </span>
       ),
       status: (
@@ -54,12 +54,12 @@ export default function PurchaseHistory({ data = [] }) {
               : "text-yellow-400"
           }`}
         >
-          {his.status}
+          {his.status || 'Pending'}
         </span>
       ),
       reward_earned: (
         <span className="text-white whitespace-nowrap">
-          {his.points > 0 ? `${his.points} pts (5%)` : "-"}
+          {(his.points || 0) > 0 ? `${his.points} pts (5%)` : "-"}
         </span>
       ),
     }));
