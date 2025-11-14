@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getCSSVariables } from '../styles/appleDesignSystem';
 
 const ThemeContext = createContext();
 
@@ -28,15 +27,8 @@ export const ThemeProvider = ({ children }) => {
     // Save to localStorage
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     
-    // Apply CSS variables
-    const root = document.documentElement;
-    const cssVars = getCSSVariables(isDark);
-    
-    Object.entries(cssVars).forEach(([key, value]) => {
-      root.style.setProperty(key, value);
-    });
-    
     // Apply class to html element
+    const root = document.documentElement;
     if (isDark) {
       root.classList.add('dark');
       root.classList.remove('light');
